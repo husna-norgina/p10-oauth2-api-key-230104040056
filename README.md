@@ -1,199 +1,291 @@
-# 🔐 Praktikum #10 — Web Service Engineering
+# 🌐 Praktikum 10 — API Security & Authorization (Express.js)
 
-Menerapkan **Simulasi API Key dan OAuth 2.0** menggunakan Node.js dengan arsitektur modular yang mencakup pemisahan *routes*, *controllers*, *middleware*, *models*, dan *utils*. Project ini mensimulasikan validasi **API Key**, proses **token grant OAuth 2.0**, pembuatan **JWT**, verifikasi token, role-based access control, serta pengujian akses resource terproteksi.
+Praktikum ini membahas **penerapan keamanan dan otorisasi pada RESTful API** menggunakan **Node.js dan Express.js**. API menerapkan **API Key**, **Authentication (Login)**, **Token Validation**, serta **Role-Based Access Control (RBAC)** untuk membedakan hak akses **User Biasa** dan **Admin**.
 
-**Topik:** Simulasi API Key & OAuth 2.0 (Authorization & Authentication)
+**Topik:** API Security, Authentication & Authorization (Express.js)
 
 ---
 
 ## 🧑‍🎓 Informasi Mahasiswa
 
-| Informasi         | Data                                   |
-| ----------------- | -------------------------------------- |
-| Mata Kuliah       | Web Service Engineering                |
-| Dosen Pengampu    | Muhayat, M.IT                          |
-| Praktikum         | P10 - Simulasi API Key & OAuth 2.0     |
-| Nama Mahasiswa    | Husna Norgina                          |
-| NIM               | 230104040056                           |
-| Kelas             | TI23B                                  |
-| Tanggal Praktikum | 08-12-2025                             |
+|--------------------|--------------------------------------------------------------------|
+| Mata Kuliah        | Web Service Engineering                                            |
+| Dosen Pengampu     | Muhayat, M.IT                                                      |
+| Praktikum / Proyek | P10 – API Security & Authorization                                 |
+| Nama Mahasiswa     | Husna Norgina                                                      |
+| NIM                | 230104040056                                                       |
+| Kelas              | TI23B                                                              |
+| Repo GitHub        | https://github.com/husna-norgina/p10-oauth2-api-key-230104040056   |
+| Tanggal Praktikum  | 08-12-2025                                                         |  
 
 ---
 
 ## 🎯 Tujuan Praktikum
 
-1. Memahami konsep dan perbedaan antara API Key dan OAuth 2.0.
-2. Mengimplementasikan middleware untuk validasi otentikasi di Express.js.
-3. Mengelola dan memvalidasi API Key sederhana di sisi server.
-4. Mensimulasikan proses pemberian token (Token Grant) dan akses resource terproteksi menggunakan JWT.
-5. Menggunakan MongoDB Atlas untuk menyimpan data pengguna, client aplikasi, dan API Key.
+1. Menerapkan **API Key** sebagai lapisan keamanan awal.
+2. Mengimplementasikan **Authentication (Login)**.
+3. Menggunakan **Token-based Authorization**.
+4. Menerapkan **Role-Based Access Control (RBAC)**.
+5. Menguji request valid dan tidak valid.
+6. Menggunakan **HTTP Status Code** sesuai standar REST.
 
 ---
 
 ## 🛠 Tools & Environment
 
-### **Tools Utama**
-
-* Node.js LTS
+* Node.js
 * Express.js
-* MongoDB Atlas
-* Mongoose
 * JSON Web Token (JWT)
-* Dotenv
+* Visual Studio Code
 * Postman
-* GitHub (repository)
+* Git & GitHub
 
 ---
 
-## ⚙️ Struktur Project
+## 🧱 Arsitektur Sistem
 
-```
-p10-oauth2-api-key-230104040056/
-├── evidence/
-├── node_modules/
-├── src/
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   └── productController.js
-│   ├── middleware/
-│   │   ├── apiKeyMiddleware.js
-│   │   ├── authMiddleware.js
-│   │   └── errorMiddleware.js
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── ApiKey.js
-│   │   └── Product.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   └── productRoutes.js
-│   └── utils/
-│       └── generateToken.js
-├── .env
-├── package-lock.json
-├── package.json
-├── README.md
-└── server.js
-```
+**Alur Sistem:**
+
+* Client (Postman)
+* API Server (Express.js)
+* API Key Middleware
+* Authentication & Authorization Middleware
+* Controller User & Admin
+* Response JSON ke client
+
+Arsitektur menggunakan pola **Client–Server** dengan keamanan berlapis.
 
 ---
 
-## 🔑 Simulasi API Key & OAuth 2.0
-
-### **API Key (Public Access)**
-
-Digunakan untuk otentikasi sederhana pada endpoint publik:
-
-* Memvalidasi key
-* Menolak key kosong
-* Menolak key palsu
-* Menerima key valid
-
-### **OAuth 2.0 Token Grant (JWT)**
-
-Project mensimulasikan alur:
-
-* Login → Validasi kredensial
-* Server menghasilkan JWT (token akses)
-* Client menggunakan token untuk mengakses endpoint private
-* Middleware memverifikasi token
-* Role admin dan user dipisahkan
+## 🔁 Pengujian & Implementasi API
 
 ---
 
-## 🧩 Daftar Endpoint
+### 🔵 1. GET — Server API
 
-### 🔵 1. STATUS SERVER
+| Method | Endpoint | Keterangan       |
+| ------ | -------- | ---------------- |
+| GET    | `/api`   | Informasi server |
 
-| Method | Endpoint | Skenario        |
-| ------ | -------- | --------------- |
-| GET    | `/`      | Server OK (200) |
+**Hasil:**
 
----
+![GET Server API](evidence/1.%20GET%20Server%20API.png)
 
-### 🔑 2. PUBLIC ENDPOINT (API Key)
-
-| Method | Endpoint                  | Skenario         |
-| ------ | ------------------------- | ---------------- |
-| GET    | `/api/v1/products/public` | Key hilang (401) |
-| GET    | `/api/v1/products/public` | Key palsu (401)  |
-| GET    | `/api/v1/products/public` | Key valid (200)  |
+Server menampilkan informasi dasar API.
+Status: `200 OK`.
 
 ---
 
-### 🔐 3. AUTH (Login → JWT)
+### 🔴 2. GET — API Key Tidak Dikirim
 
-| Method | Endpoint             | Skenario                      |
-| ------ | -------------------- | ----------------------------- |
-| POST   | `/api/v1/auth/token` | Gagal login admin (401)       |
-| POST   | `/api/v1/auth/token` | Sukses login admin (200)      |
-| POST   | `/api/v1/auth/token` | Gagal login user biasa (401)  |
-| POST   | `/api/v1/auth/token` | Sukses login user biasa (200) |
+**Hasil:**
 
----
+![API Key Hilang](evidence/2.%20GET%20Key%20Hilang.png)
 
-### 🛡️ 4. PRIVATE (JWT + ROLE)
-
-### **🔸 CREATE Product — POST**
-
-| Method | Endpoint                   | Skenario                       |
-| ------ | -------------------------- | ------------------------------ |
-| POST   | `/api/v1/products/private` | Token hilang (403)             |
-| POST   | `/api/v1/products/private` | Token palsu (403)              |
-| POST   | `/api/v1/products/private` | Token valid (201 Created)      |
-| POST   | `/api/v1/products/private` | Gagal create, user biasa (403) |
-| POST   | `/api/v1/products/private` | Sukses create, admin (201)     |
+Request ditolak karena API Key tidak dikirim.
+Status: `401 Unauthorized`.
 
 ---
 
-### **🔸 UPDATE Product — PUT**
+### 🔴 3. GET — API Key Tidak Valid
 
-| Method | Endpoint                       | Skenario               |
-| ------ | ------------------------------ | ---------------------- |
-| PUT    | `/api/v1/products/private/:id` | Gagal User biasa (403) |
-| PUT    | `/api/v1/products/private/:id` | Sukses Admin (200)     |
+**Hasil:**
 
----
+![API Key Palsu](evidence/3.%20GET%20Key%20Palsu.png)
 
-### **🔸 DELETE Product — DELETE**
-
-| Method | Endpoint                       | Skenario               |
-| ------ | ------------------------------ | ---------------------- |
-| DELETE | `/api/v1/products/private/:id` | Gagal User biasa (403) |
-| DELETE | `/api/v1/products/private/:id` | Admin (200)            |
-
-> Semua hasil uji Postman disimpan di folder: `./evidence/`
+API Key tidak valid.
+Status: `403 Forbidden`.
 
 ---
 
-## 📊 Analisis
+### 🔵 4. GET — API Key Valid
 
-* Validasi API Key berjalan dengan benar pada endpoint publik.
-* Proses token grant menghasilkan JWT yang valid untuk admin dan user biasa.
-* Middleware berhasil memverifikasi token serta menolak token hilang atau palsu.
-* Role-based authorization bekerja sesuai aturan, hanya admin yang dapat melakukan CRUD.
-* MongoDB Atlas menyimpan data user, client, API Key, dan produk secara terstruktur.
-* Seluruh skenario pengujian Postman berjalan sesuai ekspektasi dan konsisten.
+**Hasil:**
+
+![API Key Valid](evidence/4.%20GET%20Key%20Valid.png)
+
+API Key valid dan request diterima.
+Status: `200 OK`.
+
+---
+
+### 🔴 5. POST — Login Admin Gagal
+
+**Hasil:**
+
+![Login Admin Gagal](evidence/5.%20POST%20Gagal%20Login%20Admin.png)
+
+Login gagal karena kredensial salah.
+Status: `401 Unauthorized`.
+
+---
+
+### 🔵 6. POST — Login Admin Berhasil
+
+**Hasil:**
+
+![Login Admin Sukses](evidence/6.%20POST%20Sukses%20Login%20Admin.png)
+
+Admin berhasil login dan menerima token.
+Status: `200 OK`.
+
+---
+
+### 🔴 7. POST — Login User Gagal
+
+**Hasil:**
+
+![Login User Gagal](evidence/7.%20POST%20Gagal%20Login%20User%20Biasa.png)
+
+Login user gagal.
+Status: `401 Unauthorized`.
+
+---
+
+### 🔵 8. POST — Login User Berhasil
+
+**Hasil:**
+
+![Login User Sukses](evidence/8.%20POST%20Sukses%20Login%20User%20Biasa.png)
+
+User berhasil login dan mendapatkan token.
+Status: `200 OK`.
+
+---
+
+### 🔴 9. POST — Token Tidak Dikirim
+
+**Hasil:**
+
+![Token Hilang](evidence/9.%20POST%20Token%20Hilang.png)
+
+Request ditolak karena token tidak dikirim.
+Status: `401 Unauthorized`.
+
+---
+
+### 🔴 10. POST — Token Tidak Valid
+
+**Hasil:**
+
+![Token Palsu](evidence/10.%20POST%20Token%20Palsu.png)
+
+Token tidak valid.
+Status: `403 Forbidden`.
+
+---
+
+### 🔵 11. POST — Token Valid
+
+**Hasil:**
+
+![Token Valid](evidence/11.%20POST%20Token%20Valid.png)
+
+Token valid dan request berhasil.
+Status: `200 OK`.
+
+---
+
+### 🔵 12. POST — Tambah User Biasa
+
+**Hasil:**
+
+![Create User](evidence/12.%20POST%20Create%20User%20Biasa.png)
+
+User biasa berhasil dibuat oleh admin.
+Status: `201 Created`.
+
+---
+
+### 🔵 13. POST — Tambah Admin
+
+**Hasil:**
+
+![Create Admin](evidence/13.%20POST%20Create%20Admin.png)
+
+Admin baru berhasil dibuat.
+Status: `201 Created`.
+
+---
+
+### 🔵 14. PUT — Update User Biasa
+
+**Hasil:**
+
+![Update User](evidence/14.%20PUT%20Update%20User%20Biasa.png)
+
+Data user berhasil diperbarui.
+Status: `200 OK`.
+
+---
+
+### 🔵 15. PUT — Update Admin
+
+**Hasil:**
+
+![Update Admin](evidence/15.%20PUT%20Update%20Admin.png)
+
+Data admin berhasil diperbarui.
+Status: `200 OK`.
+
+---
+
+### 🔵 16. DELETE — Hapus User Biasa
+
+**Hasil:**
+
+![Delete User](evidence/16.%20DELETE%20User%20Biasa.png)
+
+User biasa berhasil dihapus.
+Status: `200 OK`.
+
+---
+
+### 🔵 17. DELETE — Hapus Admin
+
+**Hasil:**
+
+![Delete Admin](evidence/17.%20DELETE%20Admin.png)
+
+Admin berhasil dihapus.
+Status: `200 OK`.
+
+---
+
+## 📄 Laporan Praktikum 10
+
+[230104040056_Husna Norgina_P10.pdf](evidence/230104040056_Husna%20Norgina_P10.pdf)
+
+---
+
+> Semua screenshot hasil uji endpoint dan laporan praktikum disimpan pada folder:  
+> 📂 `./evidence/`
+
+---
+
+## 📊 Analisis Praktikum
+
+* API Key membatasi akses awal API.
+* Authentication memverifikasi identitas user dan admin.
+* Authorization berbasis token berjalan dengan baik.
+* RBAC membedakan hak akses sesuai role.
+* Status code HTTP digunakan konsisten.
 
 ---
 
 ## ✅ Kesimpulan
 
-Praktikum 10 berhasil membangun sistem autentikasi dan otorisasi yang aman menggunakan API Key dan JWT pada arsitektur Node.js yang terstruktur melalui pemisahan controllers, middleware, models, routes, dan utils. Validasi key, verifikasi token, dan role admin-user berjalan efektif. Semua skenario pengujian memenuhi standar keamanan, error handler memberikan respons konsisten, dan seeder mempermudah pengelolaan data awal. Sistem stabil, aman, mengikuti best practices, dan memenuhi seluruh tujuan praktikum.
+Berdasarkan praktikum yang dilakukan, penerapan API Security & Authorization pada RESTful API menggunakan Express.js berhasil diimplementasikan dengan baik. Mekanisme keamanan berupa API Key, authentication berbasis login, validasi token, serta Role-Based Access Control (RBAC) mampu membatasi dan mengatur hak akses antara user biasa dan admin secara tepat. Seluruh proses pengujian menunjukkan bahwa request valid dapat diproses dengan baik, sedangkan request tidak valid berhasil ditolak dengan status code HTTP yang sesuai, sehingga sistem API berjalan aman, terkontrol, dan sesuai prinsip RESTful API.
 
 ---
 
-## 📌 Checklist Praktikum
+## 📌 Catatan
 
-* ✅ Validasi API Key berjalan pada endpoint publik
-* ✅ Proses login menghasilkan JWT yang valid
-* ✅ Middleware verifikasi token berjalan pada endpoint private
-* ✅ Role admin dan user biasa berfungsi dengan benar
-* ✅ Akses CRUD hanya untuk admin
-* ✅ Error handler konsisten dan rapi
-* ✅ Seed data berhasil dijalankan
-* ✅ Semua skenario Postman berhasil
-* ✅ Evidence Postman lengkap
-* ✅ README.md selesai
-* ✅ Dokumentasi project tersusun rapi
+* Data bersifat simulasi (in-memory).
+* Pengujian dilakukan menggunakan Postman.
+* API dikembangkan untuk keperluan pembelajaran.
 
 ---
+
+📝 *Disusun oleh Husna Norgina (230104040056) — Praktikum 10 Web Service Engineering*
+
