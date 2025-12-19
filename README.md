@@ -8,6 +8,7 @@ Praktikum ini membahas **penerapan keamanan dan otorisasi pada RESTful API** men
 
 ## 🧑‍🎓 Informasi Mahasiswa
 
+| Informasi          | Data                                                               |
 |--------------------|--------------------------------------------------------------------|
 | Mata Kuliah        | Web Service Engineering                                            |
 | Dosen Pengampu     | Muhayat, M.IT                                                      |
@@ -72,7 +73,7 @@ Arsitektur menggunakan pola **Client–Server** dengan keamanan berlapis.
 ![GET Server API](evidence/1.%20GET%20Server%20API.png)
 
 Server menampilkan informasi dasar API.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
@@ -83,7 +84,7 @@ Status: `200 OK`.
 ![API Key Hilang](evidence/2.%20GET%20Key%20Hilang.png)
 
 Request ditolak karena API Key tidak dikirim.
-Status: `401 Unauthorized`.
+Server merespons status `401 Unauthorized`.
 
 ---
 
@@ -94,7 +95,7 @@ Status: `401 Unauthorized`.
 ![API Key Palsu](evidence/3.%20GET%20Key%20Palsu.png)
 
 API Key tidak valid.
-Status: `403 Forbidden`.
+Server merespons status `403 Forbidden`.
 
 ---
 
@@ -105,7 +106,7 @@ Status: `403 Forbidden`.
 ![API Key Valid](evidence/4.%20GET%20Key%20Valid.png)
 
 API Key valid dan request diterima.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
@@ -116,7 +117,7 @@ Status: `200 OK`.
 ![Login Admin Gagal](evidence/5.%20POST%20Gagal%20Login%20Admin.png)
 
 Login gagal karena kredensial salah.
-Status: `401 Unauthorized`.
+Server merespons status `401 Unauthorized`.
 
 ---
 
@@ -127,7 +128,7 @@ Status: `401 Unauthorized`.
 ![Login Admin Sukses](evidence/6.%20POST%20Sukses%20Login%20Admin.png)
 
 Admin berhasil login dan menerima token.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
@@ -138,7 +139,7 @@ Status: `200 OK`.
 ![Login User Gagal](evidence/7.%20POST%20Gagal%20Login%20User%20Biasa.png)
 
 Login user gagal.
-Status: `401 Unauthorized`.
+Server merespons status `401 Unauthorized`.
 
 ---
 
@@ -149,7 +150,7 @@ Status: `401 Unauthorized`.
 ![Login User Sukses](evidence/8.%20POST%20Sukses%20Login%20User%20Biasa.png)
 
 User berhasil login dan mendapatkan token.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
@@ -160,7 +161,7 @@ Status: `200 OK`.
 ![Token Hilang](evidence/9.%20POST%20Token%20Hilang.png)
 
 Request ditolak karena token tidak dikirim.
-Status: `401 Unauthorized`.
+Server merespons status `401 Unauthorized`.
 
 ---
 
@@ -171,7 +172,7 @@ Status: `401 Unauthorized`.
 ![Token Palsu](evidence/10.%20POST%20Token%20Palsu.png)
 
 Token tidak valid.
-Status: `403 Forbidden`.
+Server merespons status `403 Forbidden`.
 
 ---
 
@@ -182,7 +183,7 @@ Status: `403 Forbidden`.
 ![Token Valid](evidence/11.%20POST%20Token%20Valid.png)
 
 Token valid dan request berhasil.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
@@ -193,7 +194,7 @@ Status: `200 OK`.
 ![Create User](evidence/12.%20POST%20Create%20User%20Biasa.png)
 
 User biasa berhasil dibuat oleh admin.
-Status: `201 Created`.
+Server merespons status `201 Created`.
 
 ---
 
@@ -204,7 +205,7 @@ Status: `201 Created`.
 ![Create Admin](evidence/13.%20POST%20Create%20Admin.png)
 
 Admin baru berhasil dibuat.
-Status: `201 Created`.
+Server merespons status `201 Created`.
 
 ---
 
@@ -215,7 +216,7 @@ Status: `201 Created`.
 ![Update User](evidence/14.%20PUT%20Update%20User%20Biasa.png)
 
 Data user berhasil diperbarui.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
@@ -226,7 +227,7 @@ Status: `200 OK`.
 ![Update Admin](evidence/15.%20PUT%20Update%20Admin.png)
 
 Data admin berhasil diperbarui.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
@@ -237,7 +238,7 @@ Status: `200 OK`.
 ![Delete User](evidence/16.%20DELETE%20User%20Biasa.png)
 
 User biasa berhasil dihapus.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
@@ -248,7 +249,7 @@ Status: `200 OK`.
 ![Delete Admin](evidence/17.%20DELETE%20Admin.png)
 
 Admin berhasil dihapus.
-Status: `200 OK`.
+Server merespons status `200 OK`.
 
 ---
 
