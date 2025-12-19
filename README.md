@@ -83,7 +83,7 @@ Server merespons status `200 OK`.
 
 ![API Key Hilang](evidence/2.%20GET%20Key%20Hilang.png)
 
-Request ditolak karena API Key tidak dikirim.
+Request ditolak karena API Key hilang atau tidak dikirim.
 Server merespons status `401 Unauthorized`.
 
 ---
@@ -116,7 +116,7 @@ Server merespons status `200 OK`.
 
 ![Login Admin Gagal](evidence/5.%20POST%20Gagal%20Login%20Admin.png)
 
-Login gagal karena kredensial salah.
+Login gagal karena password salah.
 Server merespons status `401 Unauthorized`.
 
 ---
@@ -138,7 +138,7 @@ Server merespons status `200 OK`.
 
 ![Login User Gagal](evidence/7.%20POST%20Gagal%20Login%20User%20Biasa.png)
 
-Login user gagal.
+Login user gagal karena password salah.
 Server merespons status `401 Unauthorized`.
 
 ---
